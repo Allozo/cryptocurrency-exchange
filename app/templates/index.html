@@ -1,0 +1,88 @@
+<html>
+
+<body>
+    <h1>Биржа криптовалюты</h1>
+
+    <!-- Панель перехода по быстрым ссылкам -->
+
+    <div class="top_bar">
+        <a href="/list_cryptocurrency">Список криптовалют</a>
+        <br>
+        <a href="/history_operations">История операций</a>
+        <br>
+        <a href="/user_portfolio">Криптовалютный портфель</a>
+    </div>
+
+    <!-- Панель авторизации -->
+
+    <h2>Авторизация</h2>
+
+    <!-- Если пользователь не авторизован -->
+    {% if user_login == '' %}
+    <form action="/authorization_user" method="post">
+        <label for="print_user_login">Введите логин пользователя:</label>
+        <input type="text" name="user_login_in">
+        <input type="submit" value="Войти">
+    </form>
+    Авторизуйтесь чтобы торговать криптовалютой!
+    {% else %}
+    <div>
+        Вы зашли под логином: <label for="user_login_in">{{user_login}}</label>
+    </div>
+    <div>
+        Ваш баланс: <label for="user_balance">{{user_balance}}</label> у.е.
+    </div>
+
+    <form action="/exit_user" method="post">
+        <input type="submit" value="Выйти">
+    </form>
+
+    {% endif %}
+
+    <!-- Список криптовалют -->
+
+    <h2>Список криптовалют:</h2>
+
+    <ul id="list_all_cryptocurrency">
+        {% for crypto in cryptocurrency_list %}
+        <li>
+            <div>
+                <label for="crypto_name">{{crypto[0]}}</label> --- <label for="crypto_cost">{{crypto[1]}}</label> у.е.
+                {% if user_login != '' %}
+                <form action=/user_buy_cryptocurrency?crypto_name={{crypto[0]}}&crypto_cost={{crypto[1]}} method="post">
+                    <input type="text" name="count_buy_crypto">
+                    <input type="submit" value="Купить">
+                </form>
+                <form action=/user_sell_cryptocurrency?crypto_name={{crypto[0]}} method="post">
+                    <input type="text" name="count_sell_crypto">
+                    <input type="submit" value="Продать">
+                </form>
+                {% endif %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% if user_login != '' %}
+
+    <h2>Добавление новой криптовалюты</h2>
+
+    <form action=/add_cryptocurrency method="post">
+        <div>
+            <label for="">Введите название криптовалюты: </label>
+            <input type="text" name="crypto_name">
+
+            <br>
+
+            <label for="">Введите стоимость криптовалюты:</label>
+            <input type="text" name="crypto_cost">
+
+            <br>
+
+            <input type="submit" value="Добавить">
+        </div>
+    </form>
+
+    {% endif %}
+
+</body>

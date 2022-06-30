@@ -1,0 +1,85 @@
+<html>
+
+<body>
+    <h1>Биржа криптовалюты</h1>
+
+    <!-- Панель перехода по быстрым ссылкам -->
+
+    <div class="top_bar">
+        <a href="/list_cryptocurrency">Список криптовалют</a>
+        <br>
+        <a href="/history_operations">История операций</a>
+        <br>
+        <a href="/user_portfolio">Криптовалютный портфель</a>
+    </div>
+
+    <!-- Панель авторизации -->
+
+    <h2>Авторизация</h2>
+
+    <!-- Если пользователь не авторизован -->
+    {% if user_login == '' %}
+    <form action="/authorization_user" method="post">
+        <label for="print_user_login">Введите логин пользователя:</label>
+        <input type="text" name="user_login_in">
+        <input type="submit" value="Войти">
+    </form>
+    Авторизуйтесь увидеть вашу историю операций!
+    {% else %}
+    <div>
+        Вы зашли под логином: <label for="user_login_in">{{user_login}}</label>
+    </div>
+    <div>
+        Ваш баланс: <label for="user_balance">{{user_balance}}</label> у.е.
+    </div>
+
+    <form action="/exit_user" method="post">
+        <input type="submit" value="Выйти">
+    </form>
+
+    <!-- Список операций, если пользователь зарегистрирован -->
+
+    <h2>История операций</h2>
+
+    {% if user_history_operations == [] %}
+
+    Вы пока не совершали операции
+
+    {% else %}
+
+    <ul id="list_user_history">
+        <table>
+            <tr>
+                <th>Действие</th>
+                <th>Название криптовалюты</th>
+                <th>Количество</th>
+            </tr>
+            {% for op in user_history_operations %}
+            <tr>
+                <th>{{op[0]}}</th>
+                <th>{{op[1]}}</th>
+                <th>{{op[2]}}</th>
+            </tr>
+            {% endfor %}
+        </table>
+    </ul>
+
+    {% if url_prev %}
+    <a href="{{url_prev}}"><< Предыдущая страница</a>
+    {% else %}
+    << Предыдущая страница
+    {% endif %}
+
+    |
+
+    {% if url_next %}
+    <a href="{{url_next}}">Следующая страница >></a>
+    {% else %}
+    Следующая страница >>
+    {% endif %}
+
+
+    {% endif %}
+
+    {% endif %}
+</body>

@@ -1,0 +1,67 @@
+<html>
+
+<body>
+    <h1>Биржа криптовалюты</h1>
+
+    <!-- Панель перехода по быстрым ссылкам -->
+
+    <div class="top_bar">
+        <a href="/list_cryptocurrency">Список криптовалют</a>
+        <br>
+        <a href="/history_operations">История операций</a>
+        <br>
+        <a href="/user_portfolio">Криптовалютный портфель</a>
+    </div>
+
+    <!-- Панель авторизации -->
+
+    <h2>Авторизация</h2>
+
+    <!-- Если пользователь не авторизован -->
+    {% if user_login == '' %}
+    <form action="/authorization_user" method="post">
+        <label for="print_user_login">Введите логин пользователя:</label>
+        <input type="text" name="user_login_in">
+        <input type="submit" value="Войти">
+    </form>
+    Авторизуйтесь увидеть ваш портфель с криптовалютой!
+    {% else %}
+    <div>
+        Вы зашли под логином: <label for="user_login_in">{{user_login}}</label>
+    </div>
+    <div>
+        Ваш баланс: <label for="user_balance">{{user_balance}}</label> у.е.
+    </div>
+
+    <form action="/exit_user" method="post">
+        <input type="submit" value="Выйти">
+    </form>
+
+    <!-- Список криптовалют, если пользователь зарегистрирован -->
+
+    <h2>Список криптовалюты, которая у вас есть:</h2>
+
+    {% if user_portfolio == [] %}
+
+    У вас пока нет криптовалюты
+
+    {% else %}
+
+    <ul id="list_user_portfolio">
+        <table>
+            <tr>
+                <th>Название</th>
+                <th>Количество</th>
+            </tr>
+            {% for crypto in user_portfolio %}
+            <tr>
+                <th>{{crypto[1]}}</th>
+                <th>{{crypto[0]}}</th>
+            </tr>
+            {% endfor %}
+        </table>
+    </ul>
+    {% endif %}
+
+    {% endif %}
+</body>
